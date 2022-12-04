@@ -1,5 +1,6 @@
 # from email import message
 # from http import client
+#Credentials are stored locally 
 from twilio.rest import Client
 from credentials import account_sid, auth_token, my_twilio_phone, my_cell_phone
 
