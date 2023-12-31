@@ -7,13 +7,16 @@ class Actor:
         self.hp = 100 * level
         
     def is_alive(self):
-        return 'Actor: {}, Level: {}'.format(self.name, self.level)
+        return self.hp > 0
     
     def get_attack_power(self):
-        return randint(1,100) * self.level
+        return randint(1,10) * self.level
 
     def __repr__(self):
         return ('<Actor: {} at Level {}>' .format(self.name, self.level)) 
+    
+    def stats(self):
+        print('{} has {} hp'.format(self.name, self.hp))
     
     def attacks(self, other):
         raise NotImplementedError()
@@ -26,7 +29,7 @@ class Player(Actor):
     def attacks(self, enemy):
         power = self.get_attack_power()
         print('{} attacks {}'.format(self.name, enemy.kind))
-        print('{} has {} '.format(self.name, power))
+        print('{} has {} attack power'.format(self.name, power))
         enemy.hp -= power
         
 class Enemy(Actor):
@@ -35,7 +38,7 @@ class Enemy(Actor):
         self.kind = kind
         
     def attacks(self, player):
-        print('{} the {} attack {}'.format(self.name, self.kind, self.player))
+        print('{} the {} attack {}'.format(self.name, self.kind, player.name))
         e_power = self.get_attack_power()
         print('{} has {} attack power'.format(self.name, e_power))
         player.hp -= e_power
@@ -46,7 +49,7 @@ class Ogre(Enemy):
         self.size = size #Extends Enemy class
     #Overide the attack power 
     def get_attack_power(self):
-        return randint(1,50) * self.size * self.level
+        return randint(1,5) * (self.size * self.level)
         
 class Imp(Enemy):
     def __init__(self, name, level):

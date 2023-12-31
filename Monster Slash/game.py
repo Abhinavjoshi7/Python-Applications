@@ -32,20 +32,29 @@ class Game:
                 self.player.heal()
                 print(self.player.hp)
             elif cmd == 'a':
-                print('{} attacks the {}'.format(self.player.name, next_enemy.kind))
-                if self.player.attacks(next_enemy):
+                self.player.attacks(next_enemy)
+                if not next_enemy.is_alive():
                     self.enemies.remove(next_enemy)
-                else:
-                    print('{} hides to plan the next move'.format(player.name))
-
+                    next_enemy = None
+                 
+                if next_enemy:
+                    next_enemy.attacks(self.player)
+                
             elif cmd == 'p':
                 print('You are still thinking about your next move...')
-
+                if random.randint(1, 11) < 5:
+                    next_enemy.attacks(self.player)
             else:
                 print("Please chose a valid option")
             
+            if not self.player.is_alive():
+                print('Oh no! You lose!')
+                break
             self.print_line_break()
-
+            self.player.stats()
+            for e in self.enemies:
+                e.stats()
+            self.print_line_break()
             if not self.enemies:
                 print('You have won! Congratulations!')
                 break
@@ -53,11 +62,8 @@ class Game:
 if __name__ == '__main__':
     
     enemies = [
-        Ogre('Bob',1,1),
-        Imp('Alice', 2)
+        Ogre('Bob',1,3),
+        Imp('Alice', 1)
     ]
     player = Player('Abhinav', 1)
-    game = Game(player, enemies)
-    game1 = Game(player, enemies)
-    game.main()
-    # game1.main()
+    Game(player, enemies).main()
